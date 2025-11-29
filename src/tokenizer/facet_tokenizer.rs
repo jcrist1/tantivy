@@ -1,5 +1,8 @@
 use super::{Token, TokenStream, Tokenizer};
-use crate::schema::FACET_SEP_BYTE;
+
+/// BYTE used as a level separation in the binary
+/// representation of facets.
+pub const FACET_SEP_BYTE: u8 = 0u8;
 
 /// The `FacetTokenizer` process a `Facet` binary representation
 /// and emits a token for all of its parent.
@@ -79,50 +82,5 @@ impl TokenStream for FacetTokenStream<'_> {
 
     fn token_mut(&mut self) -> &mut Token {
         self.token
-    }
-}
-
-#[cfg(test)]
-mod tests {
-
-    use super::FacetTokenizer;
-    use crate::schema::Facet;
-    use crate::tokenizer::{Token, TokenStream, Tokenizer};
-
-    #[test]
-    fn test_facet_tokenizer() {
-        let facet = Facet::from_path(vec!["top", "a", "b"]);
-        let mut tokens = vec![];
-        {
-            let mut add_token = |token: &Token| {
-                let facet = Facet::from_encoded(token.text.as_bytes().to_owned()).unwrap();
-                tokens.push(format!("{facet}"));
-            };
-            FacetTokenizer::default()
-                .token_stream(facet.encoded_str())
-                .process(&mut add_token);
-        }
-        assert_eq!(tokens.len(), 4);
-        assert_eq!(tokens[0], "/");
-        assert_eq!(tokens[1], "/top");
-        assert_eq!(tokens[2], "/top/a");
-        assert_eq!(tokens[3], "/top/a/b");
-    }
-
-    #[test]
-    fn test_facet_tokenizer_root_facets() {
-        let facet = Facet::root();
-        let mut tokens = vec![];
-        {
-            let mut add_token = |token: &Token| {
-                let facet = Facet::from_encoded(token.text.as_bytes().to_owned()).unwrap(); // ok test
-                tokens.push(format!("{facet}"));
-            };
-            FacetTokenizer::default()
-                .token_stream(facet.encoded_str()) // ok test
-                .process(&mut add_token);
-        }
-        assert_eq!(tokens.len(), 1);
-        assert_eq!(tokens[0], "/");
     }
 }

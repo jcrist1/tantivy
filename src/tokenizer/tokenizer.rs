@@ -1,6 +1,6 @@
 /// The tokenizer module contains all of the tools used to process
 /// text in `tantivy`.
-use tokenizer_api::{BoxTokenStream, TokenFilter, Tokenizer};
+use crate::tokenizer_api::{BoxTokenStream, TokenFilter, Tokenizer};
 
 use crate::tokenizer::empty_tokenizer::EmptyTokenizer;
 
