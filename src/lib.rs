@@ -9,8 +9,8 @@
 pub(crate) use tantivy_common as common;
 pub(crate) use tantivy_tokenizer_api as tokenizer_api;
 
-mod error;
-mod tokenizer;
+pub mod error;
+pub mod tokenizer;
 pub use error::*;
 
 type Result<T> = std::result::Result<T, TantivyError>;
