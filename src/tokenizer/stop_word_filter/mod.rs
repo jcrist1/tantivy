@@ -11,7 +11,6 @@
 //! assert_eq!(stream.next().unwrap().text, "crafty");
 //! assert!(stream.next().is_none());
 //! ```
-#[cfg(feature = "stopwords")]
 #[rustfmt::skip]
 mod stopwords;
 
@@ -19,7 +18,6 @@ use std::sync::Arc;
 
 use rustc_hash::FxHashSet;
 
-#[cfg(feature = "stopwords")]
 use super::Language;
 use super::{Token, TokenFilter, TokenStream, Tokenizer};
 
@@ -33,7 +31,6 @@ impl StopWordFilter {
     /// Creates a new [`StopWordFilter`] for the given [`Language`]
     ///
     /// Returns `Some` if a list of stop words is available and `None` otherwise.
-    #[cfg(feature = "stopwords")]
     pub fn new(language: Language) -> Option<Self> {
         let words = match language {
             Language::Danish => stopwords::DANISH,
